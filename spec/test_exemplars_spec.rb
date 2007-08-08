@@ -53,4 +53,9 @@ describe ExemplarBuilder do
     Chicken.exemplar.name.should == "Chicken1"
     Chicken.exemplar.name.should == "Chicken2"
   end
+  
+  it "should create different objects in succession" do
+    exemplify Chicken, :name => "yeah baby", :age => 100
+    Chicken.create_exemplar!.should_not == Chicken.create_exemplar!
+  end
 end

@@ -10,13 +10,15 @@ module ExemplarBuilder
       yield(default_exemplar) if block_given?
       
       define_method(:exemplar) do |*overrides|
+        new_exemplar = default_exemplar.clone
+        
         class_variable_set count_var_name, (class_variable_get(count_var_name) + 1)
         if @@auto_field
-          default_exemplar.send "#{@@auto_field}=", "#{klass}#{class_variable_get(count_var_name)}"
+          new_exemplar.send "#{@@auto_field}=", "#{klass}#{class_variable_get(count_var_name)}"
         end
         
-        default_exemplar.attributes = *overrides
-        default_exemplar
+        new_exemplar.attributes = *overrides
+        new_exemplar
       end
       
       define_method(:create_exemplar) do |*overrides|
