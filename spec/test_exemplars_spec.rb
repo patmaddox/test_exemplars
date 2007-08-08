@@ -47,4 +47,10 @@ describe ExemplarBuilder do
     exemplify Chicken, :name => "lame name"
     lambda { Chicken.create_exemplar! :name => "really lame" }.should raise_error
   end
+  
+  it "should allow for automatically populating an attribute based on exemplar count" do
+    exemplify Chicken, :auto_id => :name
+    Chicken.exemplar.name.should == "Chicken1"
+    Chicken.exemplar.name.should == "Chicken2"
+  end
 end

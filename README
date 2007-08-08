@@ -33,4 +33,11 @@ exemplify also takes an optional block.  This is useful for methods you need to 
   exemplify(Chicken) {|c| c.ssn = "abc123" }
   Chicken.exemplar    => #<Chicken:0x3136e1c @attributes={"name"=>nil, "ssn"=>"abc123", "age"=>nil}, @new_record=true>
   
+Finally, you can automatically populate a field's value with an autoincrementing exemplar ID.
+
+  # auto populate name field
+  exemplify Chicken, :auto_id => :name
+  Chicken.exemplar    => #<Chicken:0x311d638 @new_record=true, @attributes={"name"=>"Chicken1", "ssn"=>nil, "age"=>nil}>
+  Chicken.exemplar    => #<Chicken:0x311d638 @new_record=true, @attributes={"name"=>"Chicken2", "ssn"=>nil, "age"=>nil}>
+  
 You can also automatically save the record with ARClass.create_exemplar and ARClass.create_exemplar!.  They're just convenience methods that build an exemplar and call #save and #save! respectively.
