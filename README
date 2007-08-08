@@ -1,7 +1,7 @@
 TestExemplars
 =============
 
-This plugin is based off of Piers Crawley's post at http://www.bofh.org.uk/articles/2007/08/05/doing-the-fixture-thing.  It allows you to easily create valid ActiveRecord objects for use in testing.
+This plugin is based off of Piers Cawley's post at http://www.bofh.org.uk/articles/2007/08/05/doing-the-fixture-thing.  It allows you to easily create valid ActiveRecord objects for use in testing.
 
 Usage is really simple.  In your test_helper.rb or spec_helper.rb file just
 require "test_exemplars"
@@ -23,7 +23,7 @@ Your best bet is to take a look at spec/test_exemplars_spec.rb to grok the usage
   exemplify Chicken, :name => "chicken little", :age => 10
   Chicken.exemplar(:name => "amazing")    => #<Chicken:0x3120374 @attributes={"name"=>"amazing", "ssn"=>nil, "age"=>10}, @new_record=true>
   
-exemplify also takes an optional block.  This is useful for methods you need to call on the exemplar.  For example, attr_protected attributes can't be mass-assigned, you need to explicitly set them.
+exemplify also takes an optional block.  This is useful for methods you need to call on the exemplar.  For example, attr_protected attributes can't be mass-assigned, you need to explicitly set them.  Of course you can use it for any object initialization that isn't basic hash attributes.
 
   # ssn is ignored because of attr_protected
   exemplify Chicken, :ssn => "abc123"
