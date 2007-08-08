@@ -1,0 +1,3 @@
+sqlite3:
+  :adapter: sqlite3
+  :dbfile: vendor/plugins/test_exemplars/spec/db/test_exemplars.sqlite3.db

@@ -1,0 +1,36 @@
+TestExemplars
+=============
+
+This plugin is based off of Piers Crawley's post at http://www.bofh.org.uk/articles/2007/08/05/doing-the-fixture-thing.  It allows you to easily create valid ActiveRecord objects for use in testing.
+
+Usage is really simple.  In your test_helper.rb or spec_helper.rb file just
+require "test_exemplars"
+include ExemplarBuilder
+
+This provides you with the exemplify method that you can use to create an exemplar for any AR class.
+
+Your best bet is to take a look at spec/test_exemplars_spec.rb to grok the usage.  Here are a couple examples though.  Assume the following ActiveRecord class:
+
+  class Chicken < ActiveRecord::Base
+    attr_protected :ssn
+  end
+
+  # Basic exemplar with attributes
+  exemplify Chicken, :name => "chicken little", :age => 10
+  Chicken.exemplar    => #<Chicken:0x31227f0 @attributes={"name"=>"chicken little", "ssn"=>nil, "age"=>10}, @new_record=true>
+  
+  # Override attributes
+  exemplify Chicken, :name => "chicken little", :age => 10
+  Chicken.exemplar(:name => "amazing")    => #<Chicken:0x3120374 @attributes={"name"=>"amazing", "ssn"=>nil, "age"=>10}, @new_record=true>
+  
+exemplify also takes an optional block.  This is useful for methods you need to call on the exemplar.  For example, attr_protected attributes can't be mass-assigned, you need to explicitly set them.
+
+  # ssn is ignored because of attr_protected
+  exemplify Chicken, :ssn => "abc123"
+  Chicken.exemplar    => #<Chicken:0x31377b8 @attributes={"name"=>nil, "ssn"=>nil, "age"=>nil}, @new_record=true>
+  
+  # ssn is assigned in a block
+  exemplify(Chicken) {|c| c.ssn = "abc123" }
+  Chicken.exemplar    => #<Chicken:0x3136e1c @attributes={"name"=>nil, "ssn"=>"abc123", "age"=>nil}, @new_record=true>
+  
+You can also automatically save the record with ARClass.create_exemplar and ARClass.create_exemplar.  They're just convenience methods that build an exemplar and call #save and #save! respectively.
