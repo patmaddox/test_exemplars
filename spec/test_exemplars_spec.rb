@@ -49,9 +49,9 @@ describe ExemplarBuilder do
   end
   
   it "should allow for automatically populating an attribute based on exemplar count" do
-    exemplify Chicken, :auto_id => :name
-    Chicken.exemplar.name.should == "Chicken1"
-    Chicken.exemplar.name.should == "Chicken2"
+    exemplify Chicken, :auto_id => :name, :age => 10
+    Chicken.create_exemplar!.name.should == "Chicken1"
+    Chicken.create_exemplar!.name.should == "Chicken2"
   end
   
   it "should create different objects in succession" do

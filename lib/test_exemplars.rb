@@ -3,7 +3,8 @@ module ExemplarBuilder
     count_var_name = "@@#{klass.to_s.underscore}_exemplar_count"
     klass.send :class_variable_set, count_var_name, 0
     
-    @@auto_field = options.delete(:auto_id)
+    class_auto_field_name = "@@#{klass.to_s.underscore}_exemplar_auto_field"
+    klass.send :class_variable_set, class_auto_field_name, options.delete(:auto_id)
     
     (class << klass; self; end).class_eval do
       default_exemplar = klass.new options
@@ -13,8 +14,8 @@ module ExemplarBuilder
         new_exemplar = default_exemplar.clone
         
         class_variable_set count_var_name, (class_variable_get(count_var_name) + 1)
-        if @@auto_field
-          new_exemplar.send "#{@@auto_field}=", "#{klass}#{class_variable_get(count_var_name)}"
+        if class_variable_get(class_auto_field_name)
+          new_exemplar.send "#{class_variable_get(class_auto_field_name)}=", "#{klass}#{class_variable_get(count_var_name)}"
         end
         
         new_exemplar.attributes = *overrides
