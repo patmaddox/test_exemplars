@@ -58,4 +58,14 @@ describe ExemplarBuilder do
     exemplify Chicken, :name => "yeah baby", :age => 100
     Chicken.create_exemplar!.should_not == Chicken.create_exemplar!
   end
+  
+  it "should allow you to create an exemplar without validations" do
+    class Chicken
+      validates_presence_of :name, :age
+    end
+    
+    exemplify Chicken
+    Chicken.create_exemplar.errors.should_not be_blank
+    Chicken.create_exemplar(:perform_validation => false).should have(:no).errors
+  end
 end

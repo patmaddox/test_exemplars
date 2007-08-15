@@ -22,8 +22,13 @@ module ExemplarBuilder
         new_exemplar
       end
       
-      define_method(:create_exemplar) do |*overrides|
-        returning(exemplar(*overrides)) {|e| e.save }
+      define_method(:create_exemplar) do |*params|
+        overrides = *params
+        perform_validation = true
+        if overrides && overrides.has_key?(:perform_validation)
+          perform_validation = !!overrides.delete(:perform_validation)
+        end
+        returning(exemplar(overrides)) {|e| e.save perform_validation }
       end
       
       define_method(:create_exemplar!) do |*overrides|
